@@ -3,6 +3,7 @@ package com.storix.spring_vote_22nd.api.controller;
 import com.storix.spring_vote_22nd.api.LoginRequest;
 import com.storix.spring_vote_22nd.api.LoginResponse;
 import com.storix.spring_vote_22nd.api.SignUpRequest;
+import com.storix.spring_vote_22nd.api.dto.LogoutRequest;
 import com.storix.spring_vote_22nd.domains.member.service.AuthService;
 import com.storix.spring_vote_22nd.domains.member.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,10 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest req) {
         return loginService.login(req);
+    }
+
+    @PostMapping("/logout")
+    public void logout(@RequestBody LogoutRequest req) {
+        loginService.logout(req.refreshToken());
     }
 }

@@ -29,6 +29,7 @@ public class TokenProvider implements InitializingBean {
     private final UserDetailsService userDetailsService;
     @Value("${JWT_SECRET_KEY}") private String secret;
     @Value("${JWT_ACCESS_TOKEN_VALIDITY_MS}") private long accessValidityMs;
+    @Value("${JWT_REFRESH_TOKEN_VALIDITY_MS}") private long refreshValidityMs;
 
 
     private Key key;
@@ -66,6 +67,19 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
+    /** 리프레시 토큰 생성 */
+    public String createRefreshToken(Long id) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + refreshValidityMs);
+
+        return Jwts.builder()
+                .setSubject(String.valueOf(id))
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
     /** 토큰에서 사용자 ID(subject) 추출 */
     public String getTokenUserId(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
@@ -91,6 +105,13 @@ public class TokenProvider implements InitializingBean {
         } catch (JwtException | IllegalArgumentException e) {
             return false; // 서명 불일치/변조/형식 오류
         }
+    }
+
+    /** 리프레시 토큰 만료 시간을 Date로 얻고 싶은 경우 */
+    public Date getRefreshTokenExpiry(String token) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .getBody().getExpiration();
     }
 }
 
