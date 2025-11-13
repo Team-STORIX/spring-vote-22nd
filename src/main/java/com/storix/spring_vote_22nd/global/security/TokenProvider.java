@@ -107,6 +107,17 @@ public class TokenProvider implements InitializingBean {
         }
     }
 
+    public boolean validateRefreshToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            return false;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     /** 리프레시 토큰 만료 시간을 Date로 얻고 싶은 경우 */
     public Date getRefreshTokenExpiry(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
