@@ -1,4 +1,4 @@
-package com.storix.spring_vote_22nd.api;
+package com.storix.spring_vote_22nd.api.dto;
 
 import com.storix.spring_vote_22nd.domains.member.domain.Part;
 import com.storix.spring_vote_22nd.domains.member.domain.Team;

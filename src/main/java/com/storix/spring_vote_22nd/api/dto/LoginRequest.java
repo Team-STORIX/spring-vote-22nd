@@ -1,4 +1,4 @@
-package com.storix.spring_vote_22nd.api;
+package com.storix.spring_vote_22nd.api.dto;
 
 public record LoginRequest(
         String loginId,

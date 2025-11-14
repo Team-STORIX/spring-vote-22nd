@@ -1,7 +1,7 @@
 package com.storix.spring_vote_22nd.domains.member.service;
 
-import com.storix.spring_vote_22nd.api.LoginRequest;
-import com.storix.spring_vote_22nd.api.LoginResponse;
+import com.storix.spring_vote_22nd.api.dto.LoginRequest;
+import com.storix.spring_vote_22nd.api.dto.LoginResponse;
 import com.storix.spring_vote_22nd.domains.member.domain.MemberEntity;
 import com.storix.spring_vote_22nd.domains.member.domain.RefreshToken;
 import com.storix.spring_vote_22nd.domains.member.repository.MemberRepository;

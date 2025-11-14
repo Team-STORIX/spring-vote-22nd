@@ -1,6 +1,6 @@
 package com.storix.spring_vote_22nd.domains.member.service;
 
-import com.storix.spring_vote_22nd.api.SignUpRequest;
+import com.storix.spring_vote_22nd.api.dto.SignUpRequest;
 import com.storix.spring_vote_22nd.domains.member.adaptor.MemberReader;
 import com.storix.spring_vote_22nd.domains.member.adaptor.MemberSaver;
 import lombok.RequiredArgsConstructor;

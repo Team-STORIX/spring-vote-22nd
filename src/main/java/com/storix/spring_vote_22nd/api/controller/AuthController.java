@@ -1,8 +1,8 @@
 package com.storix.spring_vote_22nd.api.controller;
 
-import com.storix.spring_vote_22nd.api.LoginRequest;
-import com.storix.spring_vote_22nd.api.LoginResponse;
-import com.storix.spring_vote_22nd.api.SignUpRequest;
+import com.storix.spring_vote_22nd.api.dto.LoginRequest;
+import com.storix.spring_vote_22nd.api.dto.LoginResponse;
+import com.storix.spring_vote_22nd.api.dto.SignUpRequest;
 import com.storix.spring_vote_22nd.api.dto.LogoutRequest;
 import com.storix.spring_vote_22nd.domains.member.service.AuthService;
 import com.storix.spring_vote_22nd.domains.member.service.LoginService;
