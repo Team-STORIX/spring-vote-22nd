@@ -18,14 +18,14 @@ public class AuthService {
 
     @Transactional
     public void signUp(SignUpRequest req) {
-        // 이미 존재하는 loginId 체크
-        memberReader.getByLoginId(req.loginId());
 
-        // 새 회원 생성 (비밀번호는 반드시 암호화)
         CreateMemberCommand m = new CreateMemberCommand(
-                req.name(),
                 req.loginId(),
-                passwordEncoder.encode(req.password())
+                passwordEncoder.encode(req.password()),
+                req.email(),
+                req.part(),
+                req.name(),
+                req.team()
         );
 
         memberSaver.execute(m);
