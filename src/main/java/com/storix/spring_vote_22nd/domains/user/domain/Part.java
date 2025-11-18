@@ -1,4 +1,4 @@
-package com.storix.spring_vote_22nd.domains.member.domain;
+package com.storix.spring_vote_22nd.domains.user.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
