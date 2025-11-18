@@ -3,6 +3,7 @@ package com.storix.spring_vote_22nd.api.auth.usecase;
 import com.storix.spring_vote_22nd.UseCase;
 import com.storix.spring_vote_22nd.api.auth.dto.LoginRequest;
 import com.storix.spring_vote_22nd.api.auth.dto.LoginWithTokenResponse;
+import com.storix.spring_vote_22nd.api.auth.dto.LogoutRequest;
 import com.storix.spring_vote_22nd.domains.user.adaptor.AuthUserDetails;
 import com.storix.spring_vote_22nd.domains.user.adaptor.TokenGenerateHelper;
 import com.storix.spring_vote_22nd.domains.user.service.LoginService;
@@ -22,5 +23,10 @@ public class LoginUseCase {
         AuthUserDetails userDetails = loginService.loadUserByUsername(req.loginId());
         LoginWithTokenResponse loginWithTokenResponse = tokenGenerateHelper.generateLoginWithToken(userDetails);
         return CustomResponse.onSuccess(SuccessCode.SUCCESS, loginWithTokenResponse);
+    }
+
+    public CustomResponse userLogoutWithRefreshToken(LogoutRequest req) {
+        loginService.logoutByRefreshToken(req.refreshToken());
+        return CustomResponse.onSuccess(SuccessCode.SUCCESS);
     }
 }

@@ -1,6 +1,7 @@
 package com.storix.spring_vote_22nd.api.auth;
 
 import com.storix.spring_vote_22nd.api.auth.dto.LoginRequest;
+import com.storix.spring_vote_22nd.api.auth.dto.LogoutRequest;
 import com.storix.spring_vote_22nd.api.auth.dto.SignupRequest;
 import com.storix.spring_vote_22nd.api.auth.usecase.AuthUseCase;
 import com.storix.spring_vote_22nd.api.auth.usecase.LoginUseCase;
@@ -34,8 +35,10 @@ public class AuthController {
                 .body(loginUseCase.userLoginWithLoginId(req));
     }
 
-//    @PostMapping("/logout")
-//    public void logout(@RequestBody LogoutRequest req) {
-//        loginService.logout(req.refreshToken());
-//    }
+    @Operation(summary = "로그아웃용 api 입니다.")
+    @PostMapping("/user/logout")
+    public ResponseEntity logout(@RequestBody LogoutRequest req) {
+        return ResponseEntity.ok()
+                .body(loginUseCase.userLogoutWithRefreshToken(req));
+    }
 }

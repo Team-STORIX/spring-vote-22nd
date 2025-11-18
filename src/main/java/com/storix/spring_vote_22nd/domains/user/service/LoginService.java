@@ -1,7 +1,9 @@
 package com.storix.spring_vote_22nd.domains.user.service;
 
 import com.storix.spring_vote_22nd.domains.user.adaptor.AuthUserDetails;
+import com.storix.spring_vote_22nd.domains.user.adaptor.RefreshTokenAdaptor;
 import com.storix.spring_vote_22nd.domains.user.adaptor.UserAdaptor;
+import com.storix.spring_vote_22nd.domains.user.domain.RefreshToken;
 import com.storix.spring_vote_22nd.domains.user.dto.LoginInfo;
 import com.storix.spring_vote_22nd.global.apiPayload.exception.LoginException;
 import jakarta.transaction.Transactional;
@@ -18,6 +20,7 @@ public class LoginService implements UserDetailsService {
 
     private final UserAdaptor userAdaptor;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenAdaptor refreshTokenAdaptor;
 
     @Override
     public AuthUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,13 +35,9 @@ public class LoginService implements UserDetailsService {
         }
     }
 
-//    @Transactional
-//    public void logout(String refreshToken) {
-//        // 토큰 검증
-//        refreshTokenAdaptor.findByRefreshToken(refreshToken);
-//
-//        // DB에서 해당 토큰 삭제
-//        refreshTokenAdaptor.deleteByUserId();
-//    }
+    public void logoutByRefreshToken(String refreshToken) {
+        Long userId = refreshTokenAdaptor.findUserIdByRefreshToken(refreshToken);
+        refreshTokenAdaptor.deleteByUserId(userId);
+    }
 }
 
