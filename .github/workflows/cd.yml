@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Deploy on EC2 Instance
         run: |
-          cd ~/storix
+          cd ~/ceos-vote
           test -f docker-compose.yml || { echo "ERORR: docker-compose.yml not found"; exit 1; }
           test -f .env || { echo "ERROR: .env not found"; exit 1; }
 
