@@ -4,10 +4,7 @@ import com.storix.spring_vote_22nd.domains.user.domain.User;
 import com.storix.spring_vote_22nd.domains.user.dto.LoginInfo;
 import com.storix.spring_vote_22nd.domains.user.repository.UserRepository;
 import com.storix.spring_vote_22nd.domains.user.dto.CreateUserCommand;
-import com.storix.spring_vote_22nd.global.apiPayload.code.ErrorCode;
-import com.storix.spring_vote_22nd.global.apiPayload.exception.LoginException;
-import com.storix.spring_vote_22nd.global.apiPayload.exception.ErrorResponse;
-import com.storix.spring_vote_22nd.global.apiPayload.exception.UnknownUserException;
+import com.storix.spring_vote_22nd.global.apiPayload.exception.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,12 +44,18 @@ public class UserAdaptor {
         throw UnknownUserException.EXCEPTION;
     }
 
-    public ErrorResponse isLoginIdDuplicate(String loginId) {
+    public void validateLoginId(String loginId) {
         Optional<User> user = userRepository.findUserByLoginId(loginId);
         if (user.isPresent()) {
-            return new ErrorResponse(ErrorCode.BAD_REQUEST);
+            throw DuplicateLoginIdException.EXCEPTION;
         }
-        return null;
+    }
+
+    public void validateEmail(String email) {
+        Optional<User> user = userRepository.findUserByEmail(email);
+        if (user.isPresent()) {
+            throw DuplicateEmailException.EXCEPTION;
+        }
     }
 
     public User saveUser(CreateUserCommand cmd) {

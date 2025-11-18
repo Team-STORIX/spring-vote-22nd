@@ -20,6 +20,10 @@ public enum ErrorCode {
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "AUTH_401_001", "토큰이 만료되었습니다. 토큰을 재 발급 해주세요"),
     REFRESH_TOKEN_EXPIRED(HttpStatus.FORBIDDEN, "AUTH_403_001", "토큰이 만료되었습니다. 재로그인 해주세요"),
 
+    // Signup error
+    DUPLICATE_LOGINID_SIGNUP(HttpStatus.BAD_REQUEST, "AUTH_ERROR_003", "중복된 아이디입니다."),
+    DUPLICATE_EMIAL_SIGNUP(HttpStatus.BAD_REQUEST, "AUTH_ERROR_004", "이미 가입 중인 이메일입니다."),
+
     // Login error
     FAILED_LOGIN(HttpStatus.UNAUTHORIZED, "AUTH_ERROR_002", "회원 아이디와 비밀번호가 일치하지 않습니다. 다시 로그인 해주세요.");
 

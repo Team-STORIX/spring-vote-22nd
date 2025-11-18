@@ -18,7 +18,8 @@ public class AuthService {
 
     @Transactional
     public Long signUp(SignupRequest req) {
-        userAdaptor.isLoginIdDuplicate(req.loginId());
+        userAdaptor.validateLoginId(req.loginId());
+        userAdaptor.validateEmail(req.email());
 
         CreateUserCommand m = new CreateUserCommand(
                 req.loginId(),
