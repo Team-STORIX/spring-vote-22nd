@@ -23,14 +23,14 @@ public class AuthController {
 
     @Operation(summary = "회원 가입용 api 입니다.")
     @PostMapping("/user/signup")
-    public ResponseEntity userSignup(@RequestBody SignupRequest req){
+    public ResponseEntity signup(@RequestBody SignupRequest req){
         return ResponseEntity.ok()
                 .body(authUseCase.signup(req));
     }
 
     @Operation(summary = "로그인용 api 입니다.")
     @PostMapping("/user/login")
-    public ResponseEntity userLogin(@RequestBody LoginRequest req){
+    public ResponseEntity login(@RequestBody LoginRequest req){
         return ResponseEntity.ok()
                 .body(loginUseCase.userLoginWithLoginId(req));
     }

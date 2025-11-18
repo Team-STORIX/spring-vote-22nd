@@ -22,11 +22,11 @@ public class LoginUseCase {
         loginService.validateUserLogin(req.loginId(), req.password());
         AuthUserDetails userDetails = loginService.loadUserByUsername(req.loginId());
         LoginWithTokenResponse loginWithTokenResponse = tokenGenerateHelper.generateLoginWithToken(userDetails);
-        return CustomResponse.onSuccess(SuccessCode.SUCCESS, loginWithTokenResponse);
+        return CustomResponse.onSuccess(SuccessCode.VALID_LOGIN, loginWithTokenResponse);
     }
 
     public CustomResponse userLogoutWithRefreshToken(LogoutRequest req) {
         loginService.logoutByRefreshToken(req.refreshToken());
-        return CustomResponse.onSuccess(SuccessCode.SUCCESS);
+        return CustomResponse.onSuccess(SuccessCode.VALID_LOGOUT);
     }
 }
