@@ -5,7 +5,7 @@ import com.storix.spring_vote_22nd.domains.user.dto.LoginInfo;
 import com.storix.spring_vote_22nd.domains.user.repository.UserRepository;
 import com.storix.spring_vote_22nd.domains.user.dto.CreateUserCommand;
 import com.storix.spring_vote_22nd.global.apiPayload.code.ErrorCode;
-import com.storix.spring_vote_22nd.global.apiPayload.exception.ArtistLoginException;
+import com.storix.spring_vote_22nd.global.apiPayload.exception.LoginException;
 import com.storix.spring_vote_22nd.global.apiPayload.exception.ErrorResponse;
 import com.storix.spring_vote_22nd.global.apiPayload.exception.UnknownUserException;
 import jakarta.transaction.Transactional;
@@ -32,7 +32,7 @@ public class UserAdaptor {
     public LoginInfo findUserLoginInfoByLoginI(String loginId){
         Optional<User> user = userRepository.findUserByLoginId(loginId);
         if(!user.isPresent()) {
-            throw ArtistLoginException.EXCEPTION;
+            throw LoginException.EXCEPTION;
         }
 
         LoginInfo loginInfo = new LoginInfo(user.get().getLoginId(), user.get().getPassword());

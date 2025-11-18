@@ -3,7 +3,7 @@ package com.storix.spring_vote_22nd.domains.user.service;
 import com.storix.spring_vote_22nd.domains.user.adaptor.AuthUserDetails;
 import com.storix.spring_vote_22nd.domains.user.adaptor.UserAdaptor;
 import com.storix.spring_vote_22nd.domains.user.dto.LoginInfo;
-import com.storix.spring_vote_22nd.global.apiPayload.exception.ArtistLoginException;
+import com.storix.spring_vote_22nd.global.apiPayload.exception.LoginException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,7 +28,7 @@ public class LoginService implements UserDetailsService {
         LoginInfo artistUserLoginInfo = userAdaptor.findUserLoginInfoByLoginI(loginId);
 
         if (!passwordEncoder.matches(password, artistUserLoginInfo.password())) {
-            throw ArtistLoginException.EXCEPTION;
+            throw LoginException.EXCEPTION;
         }
     }
 
