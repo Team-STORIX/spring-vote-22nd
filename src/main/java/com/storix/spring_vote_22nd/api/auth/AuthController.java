@@ -1,25 +1,39 @@
 package com.storix.spring_vote_22nd.api.auth;
 
-import com.storix.spring_vote_22nd.api.auth.dto.LoginRequest;
-import com.storix.spring_vote_22nd.api.auth.dto.LogoutRequest;
-import com.storix.spring_vote_22nd.api.auth.dto.SignupRequest;
+import com.storix.spring_vote_22nd.api.auth.dto.*;
 import com.storix.spring_vote_22nd.api.auth.usecase.AuthUseCase;
+import com.storix.spring_vote_22nd.api.auth.usecase.DropDownUseCase;
 import com.storix.spring_vote_22nd.api.auth.usecase.LoginUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
+    private final DropDownUseCase dropDownUseCase;
+
     private final AuthUseCase authUseCase;
     private final LoginUseCase loginUseCase;
+
+    @Operation(summary = "팀 조회용 api 입니다.")
+    @GetMapping("/user/team")
+    public ResponseEntity viewTeams() {
+        return ResponseEntity.ok()
+                .body(dropDownUseCase.getTeams());
+    }
+
+    @Operation(summary = "파트 조회용 api 입니다.")
+    @GetMapping("/user/part")
+    public ResponseEntity viewParts() {
+        return ResponseEntity.ok()
+                .body(dropDownUseCase.getParts());
+    }
 
     @Operation(summary = "회원 가입용 api 입니다.")
     @PostMapping("/user/signup")
