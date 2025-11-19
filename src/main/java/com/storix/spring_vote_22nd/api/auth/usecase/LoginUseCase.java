@@ -2,7 +2,7 @@ package com.storix.spring_vote_22nd.api.auth.usecase;
 
 import com.storix.spring_vote_22nd.UseCase;
 import com.storix.spring_vote_22nd.api.auth.dto.LoginRequest;
-import com.storix.spring_vote_22nd.api.auth.dto.LoginWithTokenResponse;
+import com.storix.spring_vote_22nd.domains.user.dto.LoginWithTokenResponse;
 import com.storix.spring_vote_22nd.api.auth.dto.LogoutRequest;
 import com.storix.spring_vote_22nd.domains.user.adaptor.AuthUserDetails;
 import com.storix.spring_vote_22nd.domains.user.adaptor.TokenGenerateHelper;

@@ -1,5 +1,6 @@
 package com.storix.spring_vote_22nd.domains.user.adaptor;
 
+import com.storix.spring_vote_22nd.domains.user.domain.Role;
 import com.storix.spring_vote_22nd.domains.user.domain.User;
 import com.storix.spring_vote_22nd.domains.user.dto.LoginInfo;
 import com.storix.spring_vote_22nd.domains.user.repository.UserRepository;
@@ -17,6 +18,14 @@ import java.util.Optional;
 public class UserAdaptor {
 
     private final UserRepository userRepository;
+
+    public Role findUserRoleByUserId(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get().getRole();
+        }
+        throw UnknownUserException.EXCEPTION;
+    }
 
     public Long findUserIdByLoginId(String loginId){
         Optional<User> user = userRepository.findUserByLoginId(loginId);

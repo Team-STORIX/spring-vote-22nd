@@ -13,7 +13,10 @@ public enum SuccessCode {
 
     // login success
     VALID_LOGIN(HttpStatus.OK, "AUTH_SUCCESS_001", "로그인에 성공했습니다."),
-    VALID_LOGOUT(HttpStatus.OK, "AUTH_SUCCESS_002", "로그아웃에 성공했습니다.");
+    VALID_LOGOUT(HttpStatus.OK, "AUTH_SUCCESS_002", "로그아웃에 성공했습니다."),
+
+    // authorization success
+    SUCCESS_REISSUE_ACCESSTOKEN(HttpStatus.CREATED, "AUTHORIZATION_SUCCESS_001", "엑세스 토큰 재발급에 성공했습니다.");
 
 
     private final HttpStatus httpStatus;

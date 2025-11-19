@@ -1,7 +1,10 @@
 package com.storix.spring_vote_22nd.domains.user.adaptor;
 
-import com.storix.spring_vote_22nd.api.auth.dto.LoginWithTokenResponse;
+import com.storix.spring_vote_22nd.domains.user.domain.Role;
+import com.storix.spring_vote_22nd.domains.user.dto.AuthorizationWithTokenResponse;
+import com.storix.spring_vote_22nd.domains.user.dto.LoginWithTokenResponse;
 import com.storix.spring_vote_22nd.domains.user.domain.RefreshToken;
+import com.storix.spring_vote_22nd.global.apiPayload.exception.InvalidTokenException;
 import com.storix.spring_vote_22nd.global.security.TokenProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +18,7 @@ public class TokenGenerateHelper {
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenAdaptor refreshTokenAdaptor;
+    private final UserAdaptor userAdaptor;
 
     @Transactional
     public LoginWithTokenResponse generateLoginWithToken(AuthUserDetails userDetails) {
@@ -34,9 +38,19 @@ public class TokenGenerateHelper {
                 .build();
         refreshTokenAdaptor.save(newRefreshToken);
 
-        return LoginWithTokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
+        return new LoginWithTokenResponse(accessToken, refreshToken);
+    }
+
+    @Transactional
+    public String reissueAccessTokenWithRefreshToken(String refreshToken) {
+
+        if (!tokenProvider.isRefreshToken(refreshToken)) {
+            throw InvalidTokenException.EXCEPTION;
+        }
+
+        Long userId = tokenProvider.parseRefreshToken(refreshToken);
+        Role role = userAdaptor.findUserRoleByUserId(userId);
+
+        return tokenProvider.createAccessToken(String.valueOf(userId), String.valueOf(role));
     }
 }

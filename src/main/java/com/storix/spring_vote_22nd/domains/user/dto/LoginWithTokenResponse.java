@@ -1,8 +1,5 @@
-package com.storix.spring_vote_22nd.api.auth.dto;
+package com.storix.spring_vote_22nd.domains.user.dto;
 
-import lombok.Builder;
-
-@Builder
 public record LoginWithTokenResponse(
         String accessToken,
         String refreshToken
