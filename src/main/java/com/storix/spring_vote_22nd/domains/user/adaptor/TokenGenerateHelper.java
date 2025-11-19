@@ -1,7 +1,6 @@
 package com.storix.spring_vote_22nd.domains.user.adaptor;
 
 import com.storix.spring_vote_22nd.domains.user.domain.Role;
-import com.storix.spring_vote_22nd.domains.user.dto.AuthorizationWithTokenResponse;
 import com.storix.spring_vote_22nd.domains.user.dto.LoginWithTokenResponse;
 import com.storix.spring_vote_22nd.domains.user.domain.RefreshToken;
 import com.storix.spring_vote_22nd.global.apiPayload.exception.InvalidTokenException;
