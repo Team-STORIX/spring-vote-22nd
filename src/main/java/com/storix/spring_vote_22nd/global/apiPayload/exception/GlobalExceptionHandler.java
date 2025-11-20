@@ -11,17 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
-        log.error("[UNHANDLED_EXCEPTION] 발생", ex);
-
-        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
-
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(response);
-    }
-
     @ExceptionHandler(STORIXCodeException.class)
     public ResponseEntity<ErrorResponse> STORIXCodeExceptionHandler (STORIXCodeException ex) {
 
@@ -32,6 +21,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
+                .body(response);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(Exception ex) {
+        log.error("[UNHANDLED_EXCEPTION] 발생", ex);
+
+        ErrorResponse response = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(response);
     }
 
