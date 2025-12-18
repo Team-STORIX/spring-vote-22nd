@@ -71,4 +71,10 @@ public class UserAdaptor {
         User user = userRepository.save(cmd.toEntity());
         return userRepository.save(user);
     }
+
+    // User 엔티티 전체 반환
+    public User findUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> UnknownUserException.EXCEPTION);
+    }
 }
