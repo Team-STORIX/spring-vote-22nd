@@ -20,20 +20,26 @@ jobs:
     steps:
       - name: Deploy on EC2 Instance
         run: |
-          cd ~/ceos-vote
-          test -f docker-compose.yml || { echo "ERORR: docker-compose.yml not found"; exit 1; }
-          test -f .env || { echo "ERROR: .env not found"; exit 1; }
+          cd ~/ceos-vote || { echo "Directory not found"; exit 1; }
 
-          echo ">>> Logging in to ECR..."
-          aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+          echo "Creating .env file..."
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" > .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}" >> .env
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> .env
+          echo "JWT_ACCESS_TOKEN_VALIDITY_MS=${{ secrets.JWT_ACCESS_TOKEN_VALIDITY_MS }}" >> .env
+          echo "JWT_REFRESH_TOKEN_VALIDITY_MS=${{ secrets.JWT_REFRESH_TOKEN_VALIDITY_MS }}" >> .env
 
-          echo ">>> Pulling latest image from ECR..."
+          echo "Logging in to ECR..."
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}
+
+          echo "Pulling latest image..."
           docker compose pull app
-
-          echo ">>> Starting new container..."
-          docker compose up -d --no-deps app
-
-          echo ">>> Pruning old images..."
+          
+          echo "Restarting services..."
+          docker compose up -d app
+          
+          echo "Cleaning up..."
           docker image prune -af
 
           echo "✅ Deployment successful!"
