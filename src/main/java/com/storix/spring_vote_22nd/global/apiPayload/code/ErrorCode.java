@@ -25,7 +25,10 @@ public enum ErrorCode {
     DUPLICATE_EMIAL_SIGNUP(HttpStatus.BAD_REQUEST, "AUTH_ERROR_004", "이미 가입 중인 이메일입니다."),
 
     // Login error
-    FAILED_LOGIN(HttpStatus.UNAUTHORIZED, "AUTH_ERROR_002", "회원 아이디와 비밀번호가 일치하지 않습니다. 다시 로그인 해주세요.");
+    FAILED_LOGIN(HttpStatus.UNAUTHORIZED, "AUTH_ERROR_002", "회원 아이디와 비밀번호가 일치하지 않습니다. 다시 로그인 해주세요."),
+
+    // Duplicated vote error
+    ALREADY_VOTED(HttpStatus.BAD_REQUEST, "VOTE_ERROR_001", "이미 투표했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
