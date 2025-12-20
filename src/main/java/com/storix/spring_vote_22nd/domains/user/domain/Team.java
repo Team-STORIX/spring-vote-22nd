@@ -6,11 +6,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Team {
-    DIGGINDIE("DiggIndie"),
-    MODELLY("Modelly"),
-    CATCHUP("Catch Up"),
-    GROOMEASY("GroomEasy"),
-    STORIX("STORIX"),;
+
+    DiggIndie("DiggIndie"),
+    Modelly("Modelly"),
+    CatchUp("CatchUp"),
+    Menual("Menual"),
+    STORIX("STORIX");
 
     private String value;
 }
