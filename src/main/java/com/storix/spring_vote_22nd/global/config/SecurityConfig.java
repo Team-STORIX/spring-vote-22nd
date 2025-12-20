@@ -41,8 +41,15 @@ public class SecurityConfig {
                         (requests) -> requests
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                // TODO: endpoint 결정 시 기본 api 추가 (일단 전부 허용)
-                                .anyRequest().permitAll()
+                                .requestMatchers(
+                                        "/api/v1/auth/user/signup",
+                                        "/api/v1/auth/user/login",
+                                        "/api/v1/auth/refresh_token",
+                                        "/api/v1/auth/user/team",
+                                        "/api/v1/auth/user/part"
+                                ).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/v1/votes/part-leader", "/api/v1/votes/demo-day").permitAll()
+                                .anyRequest().authenticated()
                 )
 
                 // JWT 설정
@@ -56,7 +63,10 @@ public class SecurityConfig {
 
         CorsConfiguration config = new CorsConfiguration();
 
-        // TODO : 프론트 서버 주소 추가
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:3000",
+                "https://*.vercel.app"
+        ));
         config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
