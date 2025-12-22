@@ -1,2 +1,40 @@
-# spring-vote-22nd
-ceos back-end 22nd voting service project
+# 투표 서비스 합동 과제 - STORIX
+
+## 1️⃣ 기술 스택
+- Spring Boot & Java 17 
+- Redis (ZSET, String)
+- MySQL 8.0
+- Flyway : DB 형상 관리 도구. 배포 시마다 테이블이 초기화되는 것을 막고 스키마 변경 이력을 코드단에서 관리
+- GitHub Actions (Self-hosted) : EC2 리소스가 제한적인 프리티어 환경에서, 외부 빌드 서버의 결과물을 안전하고 빠르게 가져오고 배포 스크립트를 단순화하기 위함
+- Swagger (OpenAPI 3.0)
+
+<hr />
+
+
+## 2️⃣ 기술 고려 사항
+
+### 1. Write-Back 패턴을 통한 성능 최적화
+
+- 🚀 **문제 상황: RDB의 I/O 병목 현상**
+  - 단시간에 많은 write 요청을 가정. 기존의 RDB 방식은 투표가 발생할 때마다 UPDATE 쿼리를 실행하여 Row-Level Lock을 유발하고, 이로 인해 대기 시간이 길어지며 DB 커넥션 풀 고갈 위험
+
+- 💡 **해결책: Redis를 활용한 Write-Back 전략 도입**
+  - 이를 해결하기 위해 인메모리 기반의 Redis를 1차 저장소로 활용하는 Write-Back(Write-Behind) 패턴을 도입
+    
+  - **실시간 집계 (ZSET)**: 후보자별 득표수는 순위 산정이 필요 -> 정렬된 집합 자료구조인 Sorted Set (ZSET)을 사용
+  - 중복 투표 방지 (SET): 빠른 조회 가능
+
+- ✅ 결과: DB에 직접 쿼리를 날리는 대신 Redis에서 메모리 연산으로 처리
+
+
+### 2. 데이터 정합성과 영속성 보장 
+
+- 🚀 **문제 상황: 인메모리 데이터의 휘발성 위험**
+  - Redis는 메모리에 데이터를 저장하므로, 투표 데이터 유실 위험
+  - Redis와 MySQL 간의 정합성 문제
+
+- 💡 **해결책 1: Redis AOF 적용**: 데이터 유실 방지를 위해 Redis의 영속성 옵션 중 AOF 방식을 사용
+  - AOF 선택 이유: 스냅샷(RDB) 방식은 특정 주기마다 저장하므로 마지막 저장 이후의 데이터가 유실될 수 있음. 반면, AOF는 모든 쓰기 연산 명령어를 로그 파일에 기록하므로, 서버 재시작 시 로그를 재실행하여 데이터 복구하기 때문에 투표 데이터 보존에 더 적합하다고 판단
+
+- 💡 **해결책 2: 주기적인 RDB 동기화 (Scheduler)**: Redis <-> RDB간 동기화 로직을 구현
+  - 스케줄러 활용: Spring Scheduler를 이용해 일정 주기마다 Redis의 투표 데이터를 읽어 MySQL에 일괄 업데이트 수행
